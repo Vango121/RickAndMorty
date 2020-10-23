@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_210sdp"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/cardViewBackground">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:background="@drawable/rick_and_morty"
+        android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_toRightOf="@id/avatar"
+                android:fontFamily="@font/raleway_medium"
+                android:textColor="@color/characterDetailsText"
+                android:text="Name "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_below="@id/name"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_toRightOf="@id/avatar"
+                android:fontFamily="@font/raleway"
+                android:text="Male"
+                android:textColor="@color/characterDetailsText"
+                android:textSize="17sp" />
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_below="@id/gender"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:layout_toRightOf="@id/avatar"
+                android:fontFamily="@font/raleway"
+                android:text="Alive"
+                android:textColor="@color/characterDetailsText"
+                android:textSize="17sp" />
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
