@@ -4,14 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainFragment">
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/radio"
         android:id="@+id/characterRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radioButtonAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All"
+            android:textSize="12sp"/>
+        <RadioButton
+            android:id="@+id/radioButtonAlive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alive"
+            android:textSize="12sp"/>
+        <RadioButton
+            android:id="@+id/radioButtonDead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dead"
+            android:textSize="12sp"/>
+    </RadioGroup>
+    <ImageButton
+        android:id="@+id/favourite"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:background="@drawable/outline_star_rate_black_24"
+        android:layout_toEndOf="@id/radio"
+        android:layout_marginStart="@dimen/_10sdp"/>
+
+</RelativeLayout>
 
 </layout>

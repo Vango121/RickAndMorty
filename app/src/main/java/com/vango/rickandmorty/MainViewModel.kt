@@ -12,6 +12,8 @@ import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
 import com.vango.rickandmorty.repository.RetrofitCustom
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,12 +23,16 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
     val characters : LiveData<List<Results>>
         get() = _characters
 
+    private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
     init {
         Log.i("elo","elo")
+        repository.getCharacters()
     }
-
+    fun getAllCharacters() : LiveData<List<Results>> = runBlocking {
+        allCharacters.await()
+    }
     fun print(){
-        _characters = repository.getCharacters()
+
 //        val call = retrofitCustom.retrofitInterface.getCharacter(1)
 //        call.enqueue(object : Callback<MainModel>{
 //            override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {

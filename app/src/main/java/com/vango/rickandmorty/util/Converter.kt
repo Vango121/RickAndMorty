@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 import com.vango.rickandmorty.model.MainModel
 import java.lang.reflect.Type
 
-class Converter : JsonDeserializer<MainModel> {
+class Converter : JsonDeserializer<MainModel> { //converter for retrofit
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal">
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_210sdp"
+        android:layout_width="@dimen/_260sdp"
         android:layout_height="@dimen/_90sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_10sdp"
@@ -15,7 +15,8 @@
         app:cardBackgroundColor="@color/cardViewBackground">
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/containerRow">
 
     <ImageView
         android:id="@+id/avatar"
@@ -34,7 +35,7 @@
                 android:fontFamily="@font/raleway_medium"
                 android:textColor="@color/characterDetailsText"
                 android:text="Name "
-                android:textSize="20sp" />
+                android:textSize="19sp" />
 
             <TextView
                 android:id="@+id/gender"
@@ -58,6 +59,15 @@
                 android:text="Alive"
                 android:textColor="@color/characterDetailsText"
                 android:textSize="17sp" />
+            <ImageView
+                android:id="@+id/star"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_below="@id/name"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/outline_star_rate_black_24"/>
 
         </RelativeLayout>
 

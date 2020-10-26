@@ -1,6 +1,7 @@
 package com.vango.rickandmorty.ui
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,16 @@ import com.squareup.picasso.Picasso
 import com.vango.rickandmorty.R
 import com.vango.rickandmorty.model.Results
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.android.synthetic.main.character_row.view.*
 import javax.inject.Inject
 
 class MainAdapter constructor(
     context: Context,
-    val modelList: List<Results>
+    val modelList: List<Results>,
+    val characterOnClickRecycler: CharacterOnClickRecycler
 ): RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-
+    var favourites : MutableList<Int> = ArrayList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.getContext()).inflate(R.layout.character_row, parent, false)
@@ -33,10 +36,31 @@ class MainAdapter constructor(
     }
 
     override fun getItemCount(): Int = modelList.size
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name : TextView = itemView.findViewById(R.id.name)
-        val gender : TextView = itemView.findViewById(R.id.gender)
-        val status : TextView = itemView.findViewById(R.id.status)
-        val avatar : ImageView = itemView.findViewById(R.id.avatar)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val name : TextView = itemView.name
+        val gender : TextView = itemView.gender
+        val status : TextView = itemView.status
+        val avatar : ImageView = itemView.avatar
+        val star : ImageView = itemView.star
+        val containerRow = itemView.containerRow
+        init {
+            //adding to favourite
+            star.setOnClickListener {
+                if (favourites.contains(adapterPosition)) {
+                    Log.i("clicked","contains")
+                    favourites.remove(adapterPosition)
+                    star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
+                }else{
+                    Log.i("clicked","dont contains")
+                    favourites.add(adapterPosition)
+                    star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
+                }
+            }
+
+            containerRow.setOnClickListener{
+                characterOnClickRecycler.characterClicked(adapterPosition)
+            }
+        }
+
     }
 }
