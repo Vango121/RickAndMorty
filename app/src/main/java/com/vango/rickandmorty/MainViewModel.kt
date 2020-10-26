@@ -22,7 +22,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
     private var _characters = MutableLiveData<List<Results>>()
     val characters : LiveData<List<Results>>
         get() = _characters
-
+    private var charactersList : MutableList<Results> = ArrayList()
     private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
     init {
         Log.i("elo","elo")
@@ -31,19 +31,16 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
     fun getAllCharacters() : LiveData<List<Results>> = runBlocking {
         allCharacters.await()
     }
-    fun print(){
-
-//        val call = retrofitCustom.retrofitInterface.getCharacter(1)
-//        call.enqueue(object : Callback<MainModel>{
-//            override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
-//                val retu = response.body()
-//                Log.i("elo",retu?.info?.count.toString())
-//            }
-//
-//            override fun onFailure(call: Call<MainModel>, t: Throwable) {
-//                print(t.message)
-//            }
-//
-//        })
+    fun setList(list: List<Results>){
+        charactersList= list as MutableList<Results>
+    }
+    fun filterCharacters(parameter : String) : List<Results>{
+        var toReturn : MutableList<Results> = ArrayList()
+        for (character in charactersList){
+            when(character.status){
+                parameter -> toReturn.add(character)
+            }
+        }
+        return toReturn
     }
 }
