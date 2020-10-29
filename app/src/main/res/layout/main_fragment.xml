@@ -38,6 +38,12 @@
             android:layout_height="wrap_content"
             android:text="Dead"
             android:textSize="12sp"/>
+        <RadioButton
+            android:id="@+id/radioButtonUnknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unknown"
+            android:textSize="12sp"/>
     </RadioGroup>
     <ImageButton
         android:id="@+id/favourite"
@@ -46,6 +52,12 @@
         android:background="@drawable/outline_star_rate_black_24"
         android:layout_toEndOf="@id/radio"
         android:layout_marginStart="@dimen/_10sdp"/>
+    <ImageView
+        android:id="@+id/splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splash"
+        android:scaleType="fitXY"/>
 
 </RelativeLayout>
 

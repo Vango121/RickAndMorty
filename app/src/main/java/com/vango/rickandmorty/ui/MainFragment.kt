@@ -42,16 +42,11 @@ class MainFragment @Inject constructor() : Fragment()
                 inflater,
                 R.layout.main_fragment, container, false
             )
-
-//        viewModel.characters.observe(viewLifecycleOwner,{
-//            Log.i("size", it.size.toString())
-//            chracterListAdapter.submitList(it)
-//            //setRecyclerView(it)
-//        })
         viewModel.getAllCharacters().observe(viewLifecycleOwner, {
-            charcterListAdapter.submitList(it)
+            charcterListAdapter.submitList(it) // submit list to recyclerview
             characterList = it
-            viewModel.setList(it)
+            viewModel.setList(it) //pass list to viewmodel
+            binding.splash.visibility = View.GONE // hide splash screen when data is ready
         })
         initRecycler() // init recycler view
         initOnClick() // init onclick/onchecked listeners
@@ -69,9 +64,13 @@ class MainFragment @Inject constructor() : Fragment()
                     charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
                 }
                 else if(binding.radioButtonDead.isChecked){
-                    Log.i("dead", binding.radioButtonDead.isChecked.toString())
                     charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
-                } else{
+
+                }
+                else if(binding.radioButtonUnknown.isChecked){
+                    charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
+                }
+                else{
                     charcterListAdapter.submitList(characterList)
                 }
                 isFavourites=false
@@ -86,6 +85,7 @@ class MainFragment @Inject constructor() : Fragment()
                     0 -> charcterListAdapter.submitList(characterList) // all
                     1 -> charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
                     2 -> charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
+                    3 -> charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
                 }
             }
 
@@ -107,7 +107,7 @@ class MainFragment @Inject constructor() : Fragment()
         if(!favourites.contains(item)){
             favourites.add(item)
         }else{
-            var id = favourites.indexOf(item)
+            val id = favourites.indexOf(item)
             favourites.removeAt(id)
         }
     }

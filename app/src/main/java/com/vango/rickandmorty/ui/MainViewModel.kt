@@ -18,7 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel @ViewModelInject constructor(private val repository: Repository) : ViewModel() {
+class MainViewModel @ViewModelInject constructor(repository: Repository) : ViewModel() {
     private var _characters = MutableLiveData<List<Results>>()
     val characters : LiveData<List<Results>>
         get() = _characters
