@@ -25,7 +25,6 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
     private var charactersList : MutableList<Results> = ArrayList()
     private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
     init {
-        Log.i("elo","elo")
         repository.getCharacters()
     }
     fun getAllCharacters() : LiveData<List<Results>> = runBlocking {
@@ -35,7 +34,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
         charactersList= list as MutableList<Results>
     }
     fun filterCharacters(parameter : String) : List<Results>{
-        var toReturn : MutableList<Results> = ArrayList()
+        val toReturn : MutableList<Results> = ArrayList()
         for (character in charactersList){
             when(character.status){
                 parameter -> toReturn.add(character)

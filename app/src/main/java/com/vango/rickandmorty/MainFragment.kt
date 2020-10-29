@@ -20,8 +20,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainFragment @Inject constructor() : Fragment()
-    ,
-    CharacterListAdapter.Interaction{
+    , CharacterListAdapter.Interaction{
 
     lateinit var binding: MainFragmentBinding
     var favourites : MutableList<Results> = ArrayList() // list with favourite characters
@@ -66,7 +65,15 @@ class MainFragment @Inject constructor() : Fragment()
                 isFavourites=true
                 charcterListAdapter.setEnabled(isFavourites)
             }else if(isFavourites){
-                charcterListAdapter.submitList(characterList)
+                if(binding.radioButtonAlive.isChecked){
+                    charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
+                }
+                else if(binding.radioButtonDead.isChecked){
+                    Log.i("dead",binding.radioButtonDead.isChecked.toString())
+                    charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
+                } else{
+                    charcterListAdapter.submitList(characterList)
+                }
                 isFavourites=false
                 charcterListAdapter.setEnabled(isFavourites)
             }

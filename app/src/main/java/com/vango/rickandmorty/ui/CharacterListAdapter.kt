@@ -76,7 +76,7 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
                 itemView.star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
             }
             itemView.star.setOnClickListener{
-                if (favourites.contains(item.id)&&!isStarEnabled) {
+                if (favourites.contains(item.id)&&!isStarEnabled) { // star on click  when in favourites it is disabled
                     Log.i("clicked","contains1"+ item.id)
                     favourites.removeAt(favourites.indexOf(item.id))
                     interaction?.onStarSelected(adapterPosition,item,false)
