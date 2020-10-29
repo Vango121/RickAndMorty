@@ -1,7 +1,11 @@
 package com.vango.rickandmorty
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.google.gson.Gson
+import com.vango.rickandmorty.model.Results
+import com.vango.rickandmorty.ui.MainFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -16,5 +20,32 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.host_fragment, MainFragment.newInstance())
                     .commitNow()
         }
+    }
+    fun replaceFragment(fragmentClass: Class<*>, character: Results) {
+        var fragment: Fragment? = null
+        try {
+            fragment = fragmentClass.newInstance() as Fragment
+            val bundle = Bundle()
+            bundle.putString("character", Gson().toJson(character))
+            fragment.arguments = bundle
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        // Insert the fragment by replacing any existing fragment
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment!!)
+            .commit()
+    }
+    fun replaceFragment(fragmentClass: Class<*>) {
+        var fragment: Fragment? = null
+        try {
+            fragment = fragmentClass.newInstance() as Fragment
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        // Insert the fragment by replacing any existing fragment
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment!!)
+            .commit()
     }
 }

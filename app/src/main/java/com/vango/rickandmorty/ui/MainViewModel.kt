@@ -1,4 +1,4 @@
-package com.vango.rickandmorty
+package com.vango.rickandmorty.ui
 
 
 import android.util.Log

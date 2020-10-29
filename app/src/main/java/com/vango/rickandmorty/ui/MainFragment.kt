@@ -1,4 +1,4 @@
-package com.vango.rickandmorty
+package com.vango.rickandmorty.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.vango.rickandmorty.MainActivity
+import com.vango.rickandmorty.R
 import com.vango.rickandmorty.databinding.MainFragmentBinding
 import com.vango.rickandmorty.model.Results
-import com.vango.rickandmorty.ui.CharacterListAdapter
-import com.vango.rickandmorty.ui.MainAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
@@ -69,7 +69,7 @@ class MainFragment @Inject constructor() : Fragment()
                     charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
                 }
                 else if(binding.radioButtonDead.isChecked){
-                    Log.i("dead",binding.radioButtonDead.isChecked.toString())
+                    Log.i("dead", binding.radioButtonDead.isChecked.toString())
                     charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
                 } else{
                     charcterListAdapter.submitList(characterList)
@@ -82,10 +82,10 @@ class MainFragment @Inject constructor() : Fragment()
             override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
                 val radioButton: View = binding.radio.findViewById(p1)
                 val index: Int = binding.radio.indexOfChild(radioButton)
-                when(index){
-                    0->charcterListAdapter.submitList(characterList) // all
-                    1->charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
-                    2->charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
+                when (index) {
+                    0 -> charcterListAdapter.submitList(characterList) // all
+                    1 -> charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
+                    2 -> charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
                 }
             }
 
@@ -100,7 +100,7 @@ class MainFragment @Inject constructor() : Fragment()
     }
 
     override fun onItemSelected(position: Int, item: Results) {
-        Log.i("clickedAdapter", position.toString())
+        (activity as MainActivity?)?.replaceFragment(CharacterDetails::class.java, item)
     }
 
     override fun onStarSelected(position: Int, item: Results, favourite: Boolean) {
