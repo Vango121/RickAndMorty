@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.room.CharacterDao
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject
@@ -42,12 +39,9 @@ class Repository @Inject constructor(private val retrofitCustom: RetrofitCustom,
         call.enqueue(object : retrofit2.Callback<MainModel> {
             override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
                 response.body()?.results?.let { characterList.addAll(it) }
-                Log.i("pages", i.toString())
-                Log.i("result", response.body()?.results.toString() + " " + i)
-                Log.i("characters", characterList.size.toString())
                 if(characterList.size==charactersCount){
                     characters.postValue(characterList)
-                    insertData(characterList)
+                    insertData(characterList) // insert data from web to room db
                 }
             }
 
@@ -58,11 +52,14 @@ class Repository @Inject constructor(private val retrofitCustom: RetrofitCustom,
         })
     }
     }
-    fun insertData(characters : List<Results>){
-        for (character in characters){
-            characterDao.insert(character)
+    fun insertData(characters : List<Results>){ // insert to room db
+        CoroutineScope(Dispatchers.IO).launch {
+            for (character in characters){
+                characterDao.insert(character)
+            }
         }
     }
+
     fun getAllCharacters() : Deferred<LiveData<List<Results>>> =
         CoroutineScope(Dispatchers.IO).async {
             characterDao.getAllCharacters()

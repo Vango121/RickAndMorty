@@ -23,7 +23,6 @@ object RoomModule {
                 CharacterDatabase::class.java,
                 "character_db"
             )
-            .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
     }

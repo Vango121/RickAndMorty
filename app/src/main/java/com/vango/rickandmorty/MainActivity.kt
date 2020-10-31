@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         // Insert the fragment by replacing any existing fragment
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment!!)
+            .addToBackStack("main")
             .commit()
     }
     fun replaceFragment(fragmentClass: Class<*>) {

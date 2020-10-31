@@ -50,7 +50,7 @@ class CharacterDetails : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            (activity as MainActivity?)!!.replaceFragment(MainFragment::class.java,)
+            (activity as MainActivity?)!!.onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)

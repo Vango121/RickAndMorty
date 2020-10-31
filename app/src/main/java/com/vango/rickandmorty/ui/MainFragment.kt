@@ -53,6 +53,26 @@ class MainFragment @Inject constructor() : Fragment()
         return binding.root
     }
 
+    override fun onResume() {
+        setCharacterListToAdapter()
+        super.onResume()
+    }
+
+    fun setCharacterListToAdapter(){
+        if(binding.radioButtonAlive.isChecked){
+            charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
+        }
+        else if(binding.radioButtonDead.isChecked){
+            charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
+
+        }
+        else if(binding.radioButtonUnknown.isChecked){
+            charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
+        }
+        else{
+            charcterListAdapter.submitList(characterList)
+        }
+    }
     private fun initOnClick(){
         binding.favourite.setOnClickListener{// star button - favourites list
             if(!isFavourites){ //was false now clicked so change to true and submit list
@@ -60,19 +80,7 @@ class MainFragment @Inject constructor() : Fragment()
                 isFavourites=true
                 charcterListAdapter.setEnabled(isFavourites)
             }else if(isFavourites){
-                if(binding.radioButtonAlive.isChecked){
-                    charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
-                }
-                else if(binding.radioButtonDead.isChecked){
-                    charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
-
-                }
-                else if(binding.radioButtonUnknown.isChecked){
-                    charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
-                }
-                else{
-                    charcterListAdapter.submitList(characterList)
-                }
+               setCharacterListToAdapter()
                 isFavourites=false
                 charcterListAdapter.setEnabled(isFavourites)
             }
