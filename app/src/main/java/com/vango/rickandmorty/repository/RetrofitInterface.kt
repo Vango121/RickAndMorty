@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface RetrofitInterface {
     @GET("/api/character")
-    fun getCharacter(@Query("page") pageId: Int) : Call<MainModel>
+    fun getCharacter(@Query("page") pageId: Int): Call<MainModel>
 }

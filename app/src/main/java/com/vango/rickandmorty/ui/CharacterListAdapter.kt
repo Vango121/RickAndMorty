@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.character_row.view.*
 
 class CharacterListAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var isStarEnabled= false
-    var favourites : MutableList<Int> = ArrayList()
+    var isStarEnabled = false
+    var favourites: MutableList<Results> = ArrayList()
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Results>() {
 
         override fun areItemsTheSame(oldItem: Results, newItem: Results): Boolean {
@@ -23,7 +23,7 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
         }
 
         override fun areContentsTheSame(oldItem: Results, newItem: Results): Boolean {
-           return oldItem == newItem
+            return oldItem == newItem
         }
 
     }
@@ -57,10 +57,16 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
     fun submitList(list: List<Results>) {
         differ.submitList(list)
     }
-    fun setEnabled(boolean: Boolean){
+
+    fun setEnabled(boolean: Boolean) {
         isStarEnabled = boolean
     }
-   inner class CharacterVIewHolder
+
+    fun passFavourites(fav: List<Results>) {
+        favourites = fav as MutableList<Results>
+    }
+
+    inner class CharacterVIewHolder
     constructor(
         itemView: View,
         private val interaction: Interaction?
@@ -70,24 +76,24 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
-            if (favourites.contains(item.id)){
+            if (favourites.contains(item)) {
                 itemView.star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
-            }else{
+            } else {
                 itemView.star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
             }
-            itemView.star.setOnClickListener{
-                if (favourites.contains(item.id)&&!isStarEnabled) { // star on click  when in favourites it is disabled
-                    Log.i("clicked","contains1"+ item.id)
-                    favourites.removeAt(favourites.indexOf(item.id))
-                    interaction?.onStarSelected(adapterPosition,item,false)
+            itemView.star.setOnClickListener {
+                if (favourites.contains(item) && !isStarEnabled) { // star on click  when in favourites it is disabled
+                    Log.i("clicked", "contains1" + item.id)
+                    //favourites.removeAt(favourites.indexOf(item))
+                    interaction?.onStarSelected(adapterPosition, item, false)
                     itemView.star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
-                    Log.i("list",favourites.toString())
-                }else if(!favourites.contains(item.id)&&!isStarEnabled){
-                    Log.i("clicked","dont contains1" + item.id)
-                    favourites.add(item.id)
+                    Log.i("list", favourites.toString())
+                } else if (!favourites.contains(item.id) && !isStarEnabled) {
+                    Log.i("clicked", "dont contains1" + item.id)
+                    //favourites.add(item)
                     itemView.star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
-                    interaction?.onStarSelected(adapterPosition,item, true)
-                    Log.i("list",favourites.toString())
+                    interaction?.onStarSelected(adapterPosition, item, true)
+                    Log.i("list", favourites.toString())
                 }
 
             }

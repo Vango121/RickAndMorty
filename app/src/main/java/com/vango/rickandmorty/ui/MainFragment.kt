@@ -19,19 +19,19 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainFragment @Inject constructor() : Fragment()
-    , CharacterListAdapter.Interaction{
+class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Interaction {
 
     lateinit var binding: MainFragmentBinding
-    var favourites : MutableList<Results> = ArrayList() // list with favourite characters
-    var characterList : List<Results> = ArrayList() // list with favourite characters
-    lateinit var charcterListAdapter : CharacterListAdapter // recyclerview adapter
-     var isFavourites : Boolean = false // check if favourites are active ( activate on buttom "favourite" click)
+    var favourites: List<Results> = ArrayList() // list with favourite characters
+    var characterList: List<Results> = ArrayList() // list with favourite characters
+    lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
+
+
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel: MainViewModel by viewModels()//create viewmodel using delegation
+    private val viewModel: MainViewModel by viewModels() //create viewmodel using delegation
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +48,11 @@ class MainFragment @Inject constructor() : Fragment()
             viewModel.setList(it) //pass list to viewmodel
             binding.splash.visibility = View.GONE // hide splash screen when data is ready
         })
+        viewModel.favourites.observe(viewLifecycleOwner, {
+            favourites = it
+            charcterListAdapter.passFavourites(it)
+        })
+        viewModel.getFavourites()
         initRecycler() // init recycler view
         initOnClick() // init onclick/onchecked listeners
         return binding.root
@@ -58,52 +63,47 @@ class MainFragment @Inject constructor() : Fragment()
         super.onResume()
     }
 
-    fun setCharacterListToAdapter(){
-        if(binding.radioButtonAlive.isChecked){
-            charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
-        }
-        else if(binding.radioButtonDead.isChecked){
-            charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
-
-        }
-        else if(binding.radioButtonUnknown.isChecked){
-            charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
-        }
-        else{
+    fun setCharacterListToAdapter() {
+        if (binding.radioButtonAlive.isChecked) {
+            charcterListAdapter.submitList(viewModel.getFilteredList("Alive"))
+        } else if (binding.radioButtonDead.isChecked) {
+            charcterListAdapter.submitList(viewModel.getFilteredList("Dead"))
+        } else if (binding.radioButtonUnknown.isChecked) {
+            charcterListAdapter.submitList(viewModel.getFilteredList("unknown"))
+        } else {
             charcterListAdapter.submitList(characterList)
         }
     }
-    private fun initOnClick(){
-        binding.favourite.setOnClickListener{// star button - favourites list
-            if(!isFavourites){ //was false now clicked so change to true and submit list
-                charcterListAdapter.submitList(favourites)
-                isFavourites=true
-                charcterListAdapter.setEnabled(isFavourites)
-            }else if(isFavourites){
-               setCharacterListToAdapter()
-                isFavourites=false
-                charcterListAdapter.setEnabled(isFavourites)
-            }
+
+    private fun initOnClick() {
+        binding.favourite.setOnClickListener {// star button - favourites list
+            val isFavourites = viewModel.isFavourite()
+            charcterListAdapter.submitList(favourites)
+            charcterListAdapter.setEnabled(isFavourites)
+            setCharacterListToAdapter()
+            //charcterListAdapter.setEnabled(isFavourites)
         }
         binding.radio.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
                 val radioButton: View = binding.radio.findViewById(p1)
                 val index: Int = binding.radio.indexOfChild(radioButton)
                 when (index) {
-                    0 -> charcterListAdapter.submitList(characterList) // all
-                    1 -> charcterListAdapter.submitList(viewModel.filterCharacters("Alive"))
-                    2 -> charcterListAdapter.submitList(viewModel.filterCharacters("Dead"))
-                    3 -> charcterListAdapter.submitList(viewModel.filterCharacters("unknown"))
+                    0 -> charcterListAdapter.submitList(characterList)
+                    // all
+                    1 -> charcterListAdapter.submitList(viewModel.getFilteredList("Alive"))
+                    2 -> charcterListAdapter.submitList(viewModel.getFilteredList("Dead"))
+                    3 -> charcterListAdapter.submitList(viewModel.getFilteredList("unknown"))
                 }
             }
 
         })
     }
-    private fun initRecycler(){
+
+    private fun initRecycler() {
         binding.characterRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             charcterListAdapter = CharacterListAdapter(this@MainFragment)
-            adapter= charcterListAdapter
+            adapter = charcterListAdapter
         }
     }
 
@@ -112,11 +112,10 @@ class MainFragment @Inject constructor() : Fragment()
     }
 
     override fun onStarSelected(position: Int, item: Results, favourite: Boolean) {
-        if(!favourites.contains(item)){
-            favourites.add(item)
-        }else{
-            val id = favourites.indexOf(item)
-            favourites.removeAt(id)
+        if (!favourites.contains(item)) {
+            viewModel.addFavourite(item)
+        } else {
+            viewModel.removeFavourite(item)
         }
     }
 }

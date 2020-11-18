@@ -42,7 +42,7 @@ class CharacterDetails : Fragment() {
         return binding.root
     }
 
-    fun setBackButton(){ // add back button
+    fun setBackButton() { // add back button
         val actionBar: ActionBar? = (activity as MainActivity?)?.getSupportActionBar()
         actionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
@@ -55,19 +55,22 @@ class CharacterDetails : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-    fun getDataFromPreviousFragment() : Results{
-        val characterGson : String? = arguments?.getString("character")
+
+    fun getDataFromPreviousFragment(): Results {
+        val characterGson: String? = arguments?.getString("character")
         return Gson().fromJson(characterGson, Results::class.java)
     }
-    fun setUiElements(results: Results){
+
+    fun setUiElements(results: Results) {
         binding.textViewName.setText(results.name)
-        binding.textViewGender.setText("Gender: " + results.gender)
-        binding.textViewLocation.setText("Location: " + results.location.name)
-        binding.textViewType.setText("Type: " + results.type)
-        binding.textViewOrigin.setText("Origin: " + results.origin.name)
-        binding.textViewSpecies.setText("Species: " + results.species)
-        binding.textViewStatus.setText("Status: " + results.status)
-        binding.textViewEpisode.setText("Number of episodes: " + results.episode.size)
+        binding.textViewGender.text = getString(R.string.gender, results.gender)
+        binding.textViewLocation.text = getString(R.string.location, results.location.name)
+        binding.textViewType.text = getString(R.string.type, results.type)
+        binding.textViewOrigin.text = getString(R.string.origin, results.origin.name)
+        binding.textViewSpecies.text = getString(R.string.species, results.species)
+        binding.textViewStatus.text = getString(R.string.status, results.status)
+        binding.textViewEpisode.text =
+            getString(R.string.number_of_episodes, results.episode.size.toString())
         Picasso.get()
             .load(results.image)
             .into(binding.imageViewAvatar)

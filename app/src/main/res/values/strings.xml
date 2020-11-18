@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">RickAndMorty</string>
+    <string name="gender">"Gender: %1$s"</string>
+    <string name="location">"Location:  %1$s"</string>
+    <string name="type">"Type: %1$s"</string>
+    <string name="origin">"Origin:  %1$s"</string>
+    <string name="species">"Species:  %1$s"</string>
+    <string name="status">"Status: %1$s"</string>
+    <string name="number_of_episodes">"Number of episodes:  %1$s"</string>
+    <string name="all">All</string>
+    <string name="alive">Alive</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">Unknown</string>
 </resources>

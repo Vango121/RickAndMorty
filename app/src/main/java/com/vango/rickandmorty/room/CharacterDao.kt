@@ -16,5 +16,5 @@ interface CharacterDao {
     fun delete(results: Results)
 
     @Query("SELECT * FROM characters_table")
-    fun getAllCharacters() : LiveData<List<Results>>
+    fun getAllCharacters(): LiveData<List<Results>>
 }

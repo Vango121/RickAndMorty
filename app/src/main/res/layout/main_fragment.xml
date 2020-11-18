@@ -24,25 +24,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="All"
+            android:text="@string/all"
             android:textSize="12sp"/>
         <RadioButton
             android:id="@+id/radioButtonAlive"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alive"
+            android:text="@string/alive"
             android:textSize="12sp"/>
         <RadioButton
             android:id="@+id/radioButtonDead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dead"
+            android:text="@string/dead"
             android:textSize="12sp"/>
         <RadioButton
             android:id="@+id/radioButtonUnknown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Unknown"
+            android:text="@string/unknown"
             android:textSize="12sp"/>
     </RadioGroup>
     <ImageButton

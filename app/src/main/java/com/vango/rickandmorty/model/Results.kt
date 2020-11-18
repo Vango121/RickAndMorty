@@ -16,18 +16,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
 @Entity(tableName = "characters_table")
-data class Results (
+data class Results(
 	@PrimaryKey
-	@SerializedName("id") val id : Int,
-	@SerializedName("name") val name : String,
-	@SerializedName("status") val status : String,
-	@SerializedName("species") val species : String,
-	@SerializedName("type") val type : String,
-	@SerializedName("gender") val gender : String,
-	@SerializedName("origin") val origin : Origin,
-	@SerializedName("location") val location : Location,
-	@SerializedName("image") val image : String,
-	@SerializedName("episode") val episode : List<String>,
-	@SerializedName("url") val url : String,
-	@SerializedName("created") val created : String
+	@SerializedName("id") val id: Int,
+	@SerializedName("name") val name: String,
+	@SerializedName("status") val status: String,
+	@SerializedName("species") val species: String,
+	@SerializedName("type") val type: String,
+	@SerializedName("gender") val gender: String,
+	@SerializedName("origin") val origin: Origin,
+	@SerializedName("location") val location: Location,
+	@SerializedName("image") val image: String,
+	@SerializedName("episode") val episode: List<String>,
+	@SerializedName("url") val url: String,
+	@SerializedName("created") val created: String
 )

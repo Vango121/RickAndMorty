@@ -20,11 +20,11 @@ import javax.inject.Singleton
 object RetrofitModule {
     @ActivityRetainedScoped
     @Provides
-    fun provideRetrofit() : RetrofitInterface{
+    fun provideRetrofit(): RetrofitInterface {
 
         val gson = GsonBuilder() //json converter with custop typeAdapter
             .setLenient()
-            .registerTypeAdapter(MainModel::class.java, Converter())
+            .registerTypeAdapter(MainModel::class.java, Converter)
             .create()
 
         val client = OkHttpClient.Builder().build()
