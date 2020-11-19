@@ -8,11 +8,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
 import com.vango.rickandmorty.repository.RetrofitCustom
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,8 +30,7 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     private var _favourites = MutableLiveData<List<Results>>()
     val favourites: LiveData<List<Results>>
         get() = _favourites
-    private var isFavourites =
-        false // check if favourites are active ( activate on buttom "favourite" click)
+    private var isFavourites = false // check if favourites are active ( activate on buttom "favourite" click)
     var favouritesList: MutableList<Results> = ArrayList()
 
     init {
@@ -47,22 +51,32 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     fun addFavourite(character: Results) {
         favouritesList.add(character)
         _favourites.postValue(favouritesList)
-        repository.saveFavourites(favouritesList)
+        //repository.saveFavourites(favouritesList)
+        GlobalScope.launch { repository.saveFavourites(favouritesList) }
     }
 
     fun removeFavourite(character: Results) {
         val id = favouritesList.indexOf(character)
         favouritesList.removeAt(id)
         _favourites.postValue(favouritesList)
-        repository.saveFavourites(favouritesList)
+        //repository.saveFavourites(favouritesList)
+        GlobalScope.launch { repository.saveFavourites(favouritesList) }
     }
 
-    fun getFavourites() {
-        favouritesList = repository.getFavourites() as MutableList<Results>
-        if (favouritesList.size == 0) {
-            favouritesList = ArrayList()
+//    fun getFavourites() {
+//        favouritesList = repository.getFavourites() as MutableList<Results>
+//        if (favouritesList.size == 0) {
+//            favouritesList = ArrayList()
+//        }
+//        _favourites.postValue(favouritesList)
+//    }
+    suspend fun getnewFav(){
+        val type = object : TypeToken<List<Results>>() {}.type
+        repository.getFavourites().collect {
+            favouritesList = Gson().fromJson(it,type)
+            _favourites.postValue(favouritesList)
+            Log.i("tttt",it)
         }
-        _favourites.postValue(favouritesList)
     }
 
     fun isFavourite(): Boolean {
@@ -71,6 +85,7 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         } else if (isFavourites) {
             isFavourites = false
         }
-        return isFavourites
+        Log.i("isFav",isFavourites.toString())
+        return !isFavourites
     }
 }

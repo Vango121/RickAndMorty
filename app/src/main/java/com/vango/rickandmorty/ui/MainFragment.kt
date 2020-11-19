@@ -15,6 +15,9 @@ import com.vango.rickandmorty.R
 import com.vango.rickandmorty.databinding.MainFragmentBinding
 import com.vango.rickandmorty.model.Results
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -25,7 +28,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     var favourites: List<Results> = ArrayList() // list with favourite characters
     var characterList: List<Results> = ArrayList() // list with favourite characters
     lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
-
+    var isFavourites : Boolean = false // check if favourites are active ( activate on buttom "favourite" click)
 
     companion object {
         fun newInstance() = MainFragment()
@@ -52,9 +55,13 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             favourites = it
             charcterListAdapter.passFavourites(it)
         })
-        viewModel.getFavourites()
+        //viewModel.getFavourites()
+        GlobalScope.launch {
+            viewModel.getnewFav()
+        }
         initRecycler() // init recycler view
         initOnClick() // init onclick/onchecked listeners
+
         return binding.root
     }
 
@@ -76,12 +83,16 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     }
 
     private fun initOnClick() {
-        binding.favourite.setOnClickListener {// star button - favourites list
-            val isFavourites = viewModel.isFavourite()
-            charcterListAdapter.submitList(favourites)
-            charcterListAdapter.setEnabled(isFavourites)
-            setCharacterListToAdapter()
-            //charcterListAdapter.setEnabled(isFavourites)
+        binding.favourite.setOnClickListener{// star button - favourites list
+            if(!isFavourites){ //was false now clicked so change to true and submit list
+                charcterListAdapter.submitList(favourites)
+                isFavourites=true
+                charcterListAdapter.setEnabled(isFavourites)
+            }else if(isFavourites){
+                setCharacterListToAdapter()
+                isFavourites=false
+                charcterListAdapter.setEnabled(isFavourites)
+            }
         }
         binding.radio.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
