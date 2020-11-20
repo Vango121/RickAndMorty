@@ -28,7 +28,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     var favourites: List<Results> = ArrayList() // list with favourite characters
     var characterList: List<Results> = ArrayList() // list with favourite characters
     lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
-    var isFavourites : Boolean = false // check if favourites are active ( activate on buttom "favourite" click)
 
     companion object {
         fun newInstance() = MainFragment()
@@ -55,59 +54,20 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             favourites = it
             charcterListAdapter.passFavourites(it)
         })
+        viewModel.characters.observe(viewLifecycleOwner, {
+            charcterListAdapter.submitList(it)
+        })
+        viewModel.favButtonEnabled.observe(viewLifecycleOwner, {
+            charcterListAdapter.setEnabled(it)
+        })
         //viewModel.getFavourites()
         GlobalScope.launch {
             viewModel.getnewFav()
         }
+        binding.mainViewModel = viewModel
         initRecycler() // init recycler view
-        initOnClick() // init onclick/onchecked listeners
 
         return binding.root
-    }
-
-    override fun onResume() {
-        setCharacterListToAdapter()
-        super.onResume()
-    }
-
-    fun setCharacterListToAdapter() {
-        if (binding.radioButtonAlive.isChecked) {
-            charcterListAdapter.submitList(viewModel.getFilteredList("Alive"))
-        } else if (binding.radioButtonDead.isChecked) {
-            charcterListAdapter.submitList(viewModel.getFilteredList("Dead"))
-        } else if (binding.radioButtonUnknown.isChecked) {
-            charcterListAdapter.submitList(viewModel.getFilteredList("unknown"))
-        } else {
-            charcterListAdapter.submitList(characterList)
-        }
-    }
-
-    private fun initOnClick() {
-        binding.favourite.setOnClickListener{// star button - favourites list
-            if(!isFavourites){ //was false now clicked so change to true and submit list
-                charcterListAdapter.submitList(favourites)
-                isFavourites=true
-                charcterListAdapter.setEnabled(isFavourites)
-            }else if(isFavourites){
-                setCharacterListToAdapter()
-                isFavourites=false
-                charcterListAdapter.setEnabled(isFavourites)
-            }
-        }
-        binding.radio.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
-            override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
-                val radioButton: View = binding.radio.findViewById(p1)
-                val index: Int = binding.radio.indexOfChild(radioButton)
-                when (index) {
-                    0 -> charcterListAdapter.submitList(characterList)
-                    // all
-                    1 -> charcterListAdapter.submitList(viewModel.getFilteredList("Alive"))
-                    2 -> charcterListAdapter.submitList(viewModel.getFilteredList("Dead"))
-                    3 -> charcterListAdapter.submitList(viewModel.getFilteredList("unknown"))
-                }
-            }
-
-        })
     }
 
     private fun initRecycler() {

@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainFragment">
 
+    <data>
+        <variable
+            name="mainViewModel"
+            type="com.vango.rickandmorty.ui.MainViewModel" />
+    </data>
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,14 +23,17 @@
         android:id="@+id/radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:onCheckedChanged="@{(group,checkedId) -> mainViewModel.onStatusChange(group.indexOfChild(group.findViewById(checkedId)))}"
+        >
         <RadioButton
             android:id="@+id/radioButtonAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/all"
-            android:textSize="12sp"/>
+            android:textSize="12sp"
+            />
         <RadioButton
             android:id="@+id/radioButtonAlive"
             android:layout_width="wrap_content"
@@ -51,7 +59,8 @@
         android:layout_height="@dimen/_25sdp"
         android:background="@drawable/outline_star_rate_black_24"
         android:layout_toEndOf="@id/radio"
-        android:layout_marginStart="@dimen/_10sdp"/>
+        android:layout_marginStart="@dimen/_10sdp"
+        android:onClick="@{mainViewModel.favouritesOnClick}"/>
     <ImageView
         android:id="@+id/splash"
         android:layout_width="match_parent"

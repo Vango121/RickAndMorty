@@ -2,6 +2,8 @@ package com.vango.rickandmorty.ui
 
 
 import android.util.Log
+import android.view.View
+import android.widget.RadioGroup
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -30,8 +32,16 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     private var _favourites = MutableLiveData<List<Results>>()
     val favourites: LiveData<List<Results>>
         get() = _favourites
-    private var isFavourites = false // check if favourites are active ( activate on buttom "favourite" click)
+    private var _characters = MutableLiveData<List<Results>>()
+    val characters: LiveData<List<Results>>
+        get() = _characters
+    private var isFavourites =
+        false // check if favourites are active ( activate on buttom "favourite" click)
     var favouritesList: MutableList<Results> = ArrayList()
+    private var _favButtonEnabled = MutableLiveData<Boolean>()
+    val favButtonEnabled: LiveData<Boolean>
+        get() = _favButtonEnabled
+    private var clickedRadioButtonId = 0
 
     init {
         repository.getCharacters()
@@ -63,29 +73,49 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         GlobalScope.launch { repository.saveFavourites(favouritesList) }
     }
 
-//    fun getFavourites() {
-//        favouritesList = repository.getFavourites() as MutableList<Results>
-//        if (favouritesList.size == 0) {
-//            favouritesList = ArrayList()
-//        }
-//        _favourites.postValue(favouritesList)
-//    }
-    suspend fun getnewFav(){
+    suspend fun getnewFav() {
         val type = object : TypeToken<List<Results>>() {}.type
         repository.getFavourites().collect {
-            favouritesList = Gson().fromJson(it,type)
+            favouritesList = Gson().fromJson(it, type)
             _favourites.postValue(favouritesList)
-            Log.i("tttt",it)
         }
     }
 
-    fun isFavourite(): Boolean {
-        if (!isFavourites) { //was false now clicked so change to true and submit list
-            isFavourites = true
-        } else if (isFavourites) {
-            isFavourites = false
+    fun onStatusChange(p1: Int) {
+        when (p1) {
+            0 -> {
+                clickedRadioButtonId = 0
+                _characters.postValue(charactersList)
+            } // all
+            1 -> {
+                clickedRadioButtonId = 1
+                _characters.postValue(getFilteredList("Alive"))
+            }
+            2 -> {
+                clickedRadioButtonId = 2
+                _characters.postValue(getFilteredList("Dead"))
+            }
+            3 -> {
+                clickedRadioButtonId = 3
+                _characters.postValue(getFilteredList(("unknown")))
+            }
         }
-        Log.i("isFav",isFavourites.toString())
-        return !isFavourites
+    }
+
+    fun favouritesOnClick(view: View) {
+        if (!isFavourites) { //was false now clicked so change to true and submit list
+            _characters.postValue(favouritesList)
+            isFavourites = true
+            _favButtonEnabled.postValue(isFavourites)
+        } else if (isFavourites) {
+            when (clickedRadioButtonId) {
+                0 -> _characters.postValue(charactersList)
+                1 -> _characters.postValue(getFilteredList("Alive"))
+                2 -> _characters.postValue(getFilteredList("Dead"))
+                3 -> _characters.postValue(getFilteredList(("unknown")))
+            }
+            isFavourites = false
+            _favButtonEnabled.postValue(isFavourites)
+        }
     }
 }
