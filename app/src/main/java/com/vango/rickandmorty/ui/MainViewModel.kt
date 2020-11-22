@@ -1,29 +1,20 @@
 package com.vango.rickandmorty.ui
 
 
-import android.util.Log
 import android.view.View
-import android.widget.RadioGroup
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
-import com.vango.rickandmorty.repository.RetrofitCustom
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainViewModel @ViewModelInject constructor(val repository: Repository) : ViewModel() {
 
@@ -37,7 +28,7 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         get() = _characters
     private var isFavourites =
         false // check if favourites are active ( activate on buttom "favourite" click)
-    var favouritesList: MutableList<Results> = ArrayList()
+    private var favouritesList: MutableList<Results> = ArrayList()
     private var _favButtonEnabled = MutableLiveData<Boolean>()
     val favButtonEnabled: LiveData<Boolean>
         get() = _favButtonEnabled
@@ -55,8 +46,8 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         charactersList = list as MutableList<Results>
     }
 
-    fun getFilteredList(parameter: String): List<Results> =
-        charactersList.filter { result -> result.status.equals(parameter) }
+    private fun getFilteredList(parameter: String): List<Results> =
+        charactersList.filter { result -> result.status == parameter }
 
     fun addFavourite(character: Results) {
         favouritesList.add(character)

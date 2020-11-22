@@ -1,11 +1,9 @@
 package com.vango.rickandmorty.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,7 +14,6 @@ import com.vango.rickandmorty.databinding.MainFragmentBinding
 import com.vango.rickandmorty.model.Results
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -24,10 +21,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Interaction {
 
-    lateinit var binding: MainFragmentBinding
-    var favourites: List<Results> = ArrayList() // list with favourite characters
-    var characterList: List<Results> = ArrayList() // list with favourite characters
-    lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
+    private lateinit var binding: MainFragmentBinding
+    private var favourites: List<Results> = ArrayList() // list with favourite characters
+    private var characterList: List<Results> = ArrayList() // list with favourite characters
+    private lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
 
     companion object {
         fun newInstance() = MainFragment()
@@ -60,7 +57,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
         viewModel.favButtonEnabled.observe(viewLifecycleOwner, {
             charcterListAdapter.setEnabled(it)
         })
-        //viewModel.getFavourites()
         GlobalScope.launch {
             viewModel.getnewFav()
         }
