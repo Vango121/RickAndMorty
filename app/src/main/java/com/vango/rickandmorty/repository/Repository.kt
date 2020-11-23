@@ -39,42 +39,45 @@ class Repository @Inject constructor(
     val favList = preferencesKey<String>("favouritesListJson")
     private var pages = 0
     private var charactersCount = 0
-    fun getCharacters() {
-        val call = retrofitCustom.retrofitInterface.getCharacter(1)
-        call.enqueue(object : retrofit2.Callback<MainModel> {
-            override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
-                response.body()?.results?.let { characterList.addAll(it) }
-                pages = response.body()?.info?.pages!!
-                charactersCount = response.body()?.info?.count!!
-                getNextPage()
-            }
 
-            override fun onFailure(call: Call<MainModel>, t: Throwable) {
+    suspend fun getCharacters(pageId: Int) = retrofitCustom.retrofitInterface.getCharacter(pageId)
 
-            }
-
-        })
-    }
-
-    private fun getNextPage() {
-        for (i in 2..pages) {
-            val call = retrofitCustom.retrofitInterface.getCharacter(i)
-            call.enqueue(object : retrofit2.Callback<MainModel> {
-                override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
-                    response.body()?.results?.let { characterList.addAll(it) }
-                    if (characterList.size == charactersCount) {
-                        characters.postValue(characterList)
-                        insertData(characterList) // insert data from web to room db
-                    }
-                }
-
-                override fun onFailure(call: Call<MainModel>, t: Throwable) {
-
-                }
-
-            })
-        }
-    }
+//    fun getCharacters() {
+//        val call = retrofitCustom.retrofitInterface.getCharacter(1)
+//        call.enqueue(object : retrofit2.Callback<MainModel> {
+//            override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
+//                response.body()?.results?.let { characterList.addAll(it) }
+//                pages = response.body()?.info?.pages!!
+//                charactersCount = response.body()?.info?.count!!
+//                getNextPage()
+//            }
+//
+//            override fun onFailure(call: Call<MainModel>, t: Throwable) {
+//
+//            }
+//
+//        })
+//    }
+//
+//    private fun getNextPage() {
+//        for (i in 2..pages) {
+//            val call = retrofitCustom.retrofitInterface.getCharacter(i)
+//            call.enqueue(object : retrofit2.Callback<MainModel> {
+//                override fun onResponse(call: Call<MainModel>, response: Response<MainModel>) {
+//                    response.body()?.results?.let { characterList.addAll(it) }
+//                    if (characterList.size == charactersCount) {
+//                        characters.postValue(characterList)
+//                        insertData(characterList) // insert data from web to room db
+//                    }
+//                }
+//
+//                override fun onFailure(call: Call<MainModel>, t: Throwable) {
+//
+//                }
+//
+//            })
+//        }
+//    }
 
     fun insertData(characters: List<Results>) { // insert to room db
         CoroutineScope(Dispatchers.IO).launch {

@@ -33,11 +33,11 @@
                 android:layout_width="@dimen/_135sdp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:layout_toRightOf="@id/avatar"
+                android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway_medium"
                 android:textColor="@color/characterDetailsText"
                 android:text="Name "
-                android:textSize="19sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/gender"
@@ -49,10 +49,10 @@
                 android:fontFamily="@font/raleway"
                 android:text="Male"
                 android:textColor="@color/characterDetailsText"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/status"
-                android:layout_width="@dimen/_60sdp"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_below="@id/gender"
                 android:layout_marginTop="@dimen/_6sdp"
@@ -60,7 +60,7 @@
                 android:fontFamily="@font/raleway"
                 android:text="Alive"
                 android:textColor="@color/characterDetailsText"
-                android:textSize="17sp" />
+                android:textSize="16sp" />
             <ImageView
                 android:id="@+id/star"
                 android:layout_width="@dimen/_25sdp"

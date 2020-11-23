@@ -45,7 +45,9 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter.submitList(it) // submit list to recyclerview
             characterList = it
             viewModel.setList(it) //pass list to viewmodel
-            binding.splash.visibility = View.GONE // hide splash screen when data is ready
+            if(it.size>0){
+                binding.splash.visibility = View.GONE // hide splash screen when data is ready
+            }
         })
         viewModel.favourites.observe(viewLifecycleOwner, {
             favourites = it
@@ -58,10 +60,12 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter.setEnabled(it)
         })
         GlobalScope.launch {
+            viewModel.getDataFromWeb()
             viewModel.getnewFav()
         }
         binding.mainViewModel = viewModel
         initRecycler() // init recycler view
+
 
         return binding.root
     }

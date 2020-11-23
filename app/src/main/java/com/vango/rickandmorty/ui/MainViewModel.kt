@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
 import kotlinx.coroutines.Deferred
@@ -35,9 +36,18 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     private var clickedRadioButtonId = 0
 
     init {
-        repository.getCharacters()
+       // repository.getCharacters()
     }
-
+    suspend fun getDataFromWeb(){ // and insert it into room db
+        var charactersList: MutableList<Results> = ArrayList()
+        val mainModel = repository.getCharacters(1)
+        charactersList.addAll(mainModel.results)
+        val pageCount = mainModel.info.pages
+        for (i in 2..pageCount){
+            charactersList.addAll(repository.getCharacters(i).results)
+        }
+        repository.insertData(charactersList)
+    }
     fun getAllCharacters(): LiveData<List<Results>> = runBlocking {
         allCharacters.await()
     }
