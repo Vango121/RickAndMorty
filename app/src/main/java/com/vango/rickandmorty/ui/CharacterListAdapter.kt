@@ -83,17 +83,13 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
             }
             itemView.star.setOnClickListener {
                 if (favourites.contains(item) && !isStarEnabled) { // star on click  when in favourites it is disabled
-                    Log.i("clicked", "contains1" + item.id)
                     //favourites.removeAt(favourites.indexOf(item))
                     interaction?.onStarSelected(adapterPosition, item, false)
                     itemView.star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
-                    Log.i("list", favourites.toString())
                 } else if (!favourites.contains(item.id) && !isStarEnabled) {
-                    Log.i("clicked", "dont contains1" + item.id)
                     //favourites.add(item)
                     itemView.star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
                     interaction?.onStarSelected(adapterPosition, item, true)
-                    Log.i("list", favourites.toString())
                 }
 
             }

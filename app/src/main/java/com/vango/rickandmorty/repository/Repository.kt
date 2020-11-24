@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.preferencesKey
 import androidx.datastore.preferences.createDataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
 import androidx.preference.PreferenceManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -91,6 +93,7 @@ class Repository @Inject constructor(
         CoroutineScope(Dispatchers.IO).async {
             characterDao.getAllCharacters()
         }
+    fun getchr() : LiveData<PagedList<Results>> = characterDao.getAllCharacters1().toLiveData(15)
 
 //    fun saveFavourites(favourites: List<Results>) {
 //        val sharedPreferences =

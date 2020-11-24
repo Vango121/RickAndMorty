@@ -83,4 +83,8 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.1'
 
     implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
+
+    def paging_version = "2.1.2"
+
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 }

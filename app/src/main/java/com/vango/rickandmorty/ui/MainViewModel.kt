@@ -6,6 +6,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.vango.rickandmorty.model.MainModel
@@ -35,7 +36,9 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         get() = _favButtonEnabled
     private var clickedRadioButtonId = 0
 
-    init {
+    //val chr : LiveData<PagedList<Results>> = repository.getchr()
+
+        init {
        // repository.getCharacters()
     }
     suspend fun getDataFromWeb(){ // and insert it into room db
