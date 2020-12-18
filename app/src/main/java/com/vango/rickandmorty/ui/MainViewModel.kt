@@ -36,21 +36,18 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         get() = _favButtonEnabled
     private var clickedRadioButtonId = 0
 
-    //val chr : LiveData<PagedList<Results>> = repository.getchr()
 
-        init {
-       // repository.getCharacters()
-    }
-    suspend fun getDataFromWeb(){ // and insert it into room db
+    suspend fun getDataFromWeb() { // and insert it into room db
         var charactersList: MutableList<Results> = ArrayList()
         val mainModel = repository.getCharacters(1)
         charactersList.addAll(mainModel.results)
         val pageCount = mainModel.info.pages
-        for (i in 2..pageCount){
+        for (i in 2..pageCount) {
             charactersList.addAll(repository.getCharacters(i).results)
         }
         repository.insertData(charactersList)
     }
+
     fun getAllCharacters(): LiveData<List<Results>> = runBlocking {
         allCharacters.await()
     }
@@ -62,10 +59,17 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     private fun getFilteredList(parameter: String): List<Results> =
         charactersList.filter { result -> result.status == parameter }
 
+    fun favClicked(character: Results) {
+        if (!favouritesList.contains(character)) {
+            addFavourite(character)
+        } else {
+            removeFavourite(character)
+        }
+    }
+
     fun addFavourite(character: Results) {
         favouritesList.add(character)
         _favourites.postValue(favouritesList)
-        //repository.saveFavourites(favouritesList)
         GlobalScope.launch { repository.saveFavourites(favouritesList) }
     }
 
@@ -73,7 +77,6 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         val id = favouritesList.indexOf(character)
         favouritesList.removeAt(id)
         _favourites.postValue(favouritesList)
-        //repository.saveFavourites(favouritesList)
         GlobalScope.launch { repository.saveFavourites(favouritesList) }
     }
 
