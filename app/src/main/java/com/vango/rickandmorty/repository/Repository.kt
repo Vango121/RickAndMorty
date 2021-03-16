@@ -10,15 +10,11 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.preferencesKey
 import androidx.datastore.preferences.createDataStore
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
-import androidx.paging.toLiveData
-import androidx.preference.PreferenceManager
+import androidx.paging.*
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.room.CharacterDao
+import com.vango.rickandmorty.room.CharacterDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -49,10 +45,21 @@ class Repository @Inject constructor(
         }
     }
 
+    fun getCharactersRoom(pageId: Int, filterId: Int): LiveData<List<Results>> {
+        when(filterId){
+            1-> return characterDao.getPageFiltered(pageId, "Alive")
+            2-> return characterDao.getPageFiltered(pageId, "Dead")
+            3-> return characterDao.getPageFiltered(pageId, "unknown")
+            else -> return characterDao.getPage(pageId)
+        }
+    }
+
+
     fun getAllCharacters(): Deferred<LiveData<List<Results>>> =
         CoroutineScope(Dispatchers.IO).async {
             characterDao.getAllCharacters()
         }
+
 
     suspend fun saveFavourites(favourites: List<Results>) {
         dataStore.edit {

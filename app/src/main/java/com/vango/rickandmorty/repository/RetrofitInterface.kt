@@ -7,5 +7,5 @@ import retrofit2.http.Query
 
 interface RetrofitInterface {
     @GET("/api/character")
-    suspend fun getCharacter(@Query("page") pageId: Int): MainModel
+    suspend fun getCharacter(@Query("page") pageId: Int?): MainModel
 }

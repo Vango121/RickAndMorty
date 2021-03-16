@@ -1,27 +1,35 @@
 package com.vango.rickandmorty.ui
 
 
+import android.util.Log
 import android.view.View
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import androidx.paging.PagedList
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class MainViewModel @ViewModelInject constructor(val repository: Repository) : ViewModel() {
+@HiltViewModel
+public class MainViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     private var charactersList: MutableList<Results> = ArrayList()
-    private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
+
+    //private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
+    private var allCharacters: LiveData<List<Results>> = repository.getCharactersRoom(1,0)
     private var _favourites = MutableLiveData<List<Results>>()
     val favourites: LiveData<List<Results>>
         get() = _favourites
@@ -35,10 +43,13 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
     val favButtonEnabled: LiveData<Boolean>
         get() = _favButtonEnabled
     private var clickedRadioButtonId = 0
-
+    private val loadTrigger = MutableLiveData<Int>()
+    val paginationLiveData: LiveData<List<Results>> =
+        Transformations.switchMap(loadTrigger) {
+            getCharacters(loadTrigger.value!!) }
 
     suspend fun getDataFromWeb() { // and insert it into room db
-        var charactersList: MutableList<Results> = ArrayList()
+        val charactersList: MutableList<Results> = ArrayList()
         val mainModel = repository.getCharacters(1)
         charactersList.addAll(mainModel.results)
         val pageCount = mainModel.info.pages
@@ -48,9 +59,23 @@ class MainViewModel @ViewModelInject constructor(val repository: Repository) : V
         repository.insertData(charactersList)
     }
 
-    fun getAllCharacters(): LiveData<List<Results>> = runBlocking {
-        allCharacters.await()
+    var count = 0
+    fun changePage(pageId: Int) {
+        count++
+        Log.i("count",count.toString())
+        loadTrigger.value = pageId
     }
+
+    fun getCharacters(pageId: Int) = runBlocking {
+        repository.getCharactersRoom(pageId,clickedRadioButtonId)
+    }
+
+    //    fun getAllCharacters(): LiveData<List<Results>> = runBlocking {
+//        allCharacters.await()
+//    }
+    fun getAllCharacters(): LiveData<List<Results>> =
+        allCharacters
+
 
     fun setList(list: List<Results>) {
         charactersList = list as MutableList<Results>

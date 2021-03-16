@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import com.squareup.picasso.Picasso
@@ -74,7 +76,7 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
 
         fun bind(item: Results) = with(itemView) {
             itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
+                interaction?.onItemSelected(bindingAdapterPosition, item)
             }
             if (favourites.contains(item)) {
                 itemView.star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
@@ -84,12 +86,12 @@ class CharacterListAdapter(private val interaction: Interaction? = null) :
             itemView.star.setOnClickListener {
                 if (favourites.contains(item) && !isStarEnabled) { // star on click  when in favourites it is disabled
                     //favourites.removeAt(favourites.indexOf(item))
-                    interaction?.onStarSelected(adapterPosition, item, false)
+                    interaction?.onStarSelected(bindingAdapterPosition, item, false)
                     itemView.star.setBackgroundResource(R.drawable.outline_star_rate_black_24)
                 } else if (!favourites.contains(item.id) && !isStarEnabled) {
                     //favourites.add(item)
                     itemView.star.setBackgroundResource(R.drawable.baseline_star_rate_black_24)
-                    interaction?.onStarSelected(adapterPosition, item, true)
+                    interaction?.onStarSelected(bindingAdapterPosition, item, true)
                 }
 
             }
