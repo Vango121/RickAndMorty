@@ -28,7 +28,7 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
 
     private var charactersList: MutableList<Results> = ArrayList()
 
-    //private var allCharacters: Deferred<LiveData<List<Results>>> = repository.getAllCharacters()
+
     private var allCharacters: LiveData<List<Results>> = repository.getCharactersRoom(1,0)
     private var _favourites = MutableLiveData<List<Results>>()
     val favourites: LiveData<List<Results>>
@@ -70,9 +70,7 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
         repository.getCharactersRoom(pageId,clickedRadioButtonId)
     }
 
-    //    fun getAllCharacters(): LiveData<List<Results>> = runBlocking {
-//        allCharacters.await()
-//    }
+
     fun getAllCharacters(): LiveData<List<Results>> =
         allCharacters
 

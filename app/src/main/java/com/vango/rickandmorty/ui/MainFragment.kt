@@ -43,7 +43,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 inflater,
                 R.layout.main_fragment, container, false
             )
-        //binding.splash.visibility = View.GONE
         viewModel.getAllCharacters().observe(viewLifecycleOwner, {
             charcterListAdapter.submitList(it) // submit list to recyclerview
             viewModel.setList(it) //pass list to viewmodel
@@ -52,7 +51,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             }
         })
         viewModel.favourites.observe(viewLifecycleOwner, {
-            Log.i("fav",it.size.toString())
             charcterListAdapter.passFavourites(it)
             for (result in it){
                 charcterListAdapter.notifyItemChanged(result.id)
