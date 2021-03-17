@@ -44,9 +44,9 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
         get() = _favButtonEnabled
     private var clickedRadioButtonId = 0
     private val loadTrigger = MutableLiveData<Int>()
-    val paginationLiveData: LiveData<List<Results>> =
+    val paginationLiveData: LiveData<List<Results>> = // switch map when more data is needed
         Transformations.switchMap(loadTrigger) {
-            getCharacters(loadTrigger.value!!) }
+            getCharacters(loadTrigger.value!!) } // get data from room
 
     suspend fun getDataFromWeb() { // and insert it into room db
         val charactersList: MutableList<Results> = ArrayList()

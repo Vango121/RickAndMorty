@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -42,7 +43,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 inflater,
                 R.layout.main_fragment, container, false
             )
-        initRecycler() // init recycler view
         //binding.splash.visibility = View.GONE
         viewModel.getAllCharacters().observe(viewLifecycleOwner, {
             charcterListAdapter.submitList(it) // submit list to recyclerview
@@ -51,11 +51,17 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 binding.splash.visibility = View.GONE // hide splash screen when data is ready
             }
         })
-
-
         viewModel.favourites.observe(viewLifecycleOwner, {
+            Log.i("fav",it.size.toString())
             charcterListAdapter.passFavourites(it)
+            for (result in it){
+                charcterListAdapter.notifyItemChanged(result.id)
+            }
         })
+        GlobalScope.launch {
+            viewModel.getnewFav()
+            viewModel.getDataFromWeb()
+        }
         viewModel.paginationLiveData.observe(viewLifecycleOwner,{
             charcterListAdapter.submitList(it)
         })
@@ -66,13 +72,16 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter.setEnabled(it)
             favourites = it
         })
-        GlobalScope.launch {
-            viewModel.getDataFromWeb()
-            viewModel.getnewFav()
-        }
+        setBackButton()
+        initRecycler() // init recycler view
         binding.mainViewModel = viewModel
 
         return binding.root
+    }
+    fun setBackButton() { // add back button
+        val actionBar: ActionBar? = (activity as MainActivity?)?.getSupportActionBar()
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+        setHasOptionsMenu(false)
     }
 
     private var loading = true
@@ -86,9 +95,9 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter = CharacterListAdapter(this@MainFragment)
             adapter = charcterListAdapter
         }
-        binding.characterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.characterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() { // pagination
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)&&!favourites) { //check for scroll down
+                if (!recyclerView.canScrollVertically(1)&&!favourites) { //check for end of current items
                     visibleItemCount =
                         recyclerView.childCount
                     totalItemCount =
@@ -99,7 +108,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                     if (loading) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = false
-                            Log.v("...", "Last Item Wow !")
                             runBlocking {
                                 ++count
                                 viewModel.changePage(count)
