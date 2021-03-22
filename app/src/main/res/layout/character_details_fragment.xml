@@ -11,13 +11,14 @@
 
         <TextView
             android:id="@+id/textViewName"
-            android:layout_width="@dimen/_180sdp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/raleway_bold"
+            android:gravity="center_horizontal"
             android:text="Rick Sanchez"
             android:textColor="@color/characterDetailsText"
             android:textSize="28sp"
-            android:layout_marginTop="@dimen/_22sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/imageViewAvatar"
@@ -27,18 +28,20 @@
             android:id="@+id/imageViewAvatar"
             android:layout_width="120dp"
             android:layout_height="118dp"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/rick_and_morty"
+            app:layout_constraintBottom_toTopOf="@+id/textViewStatus"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/textViewStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="33dp"
             android:fontFamily="@font/raleway_medium"
             android:text="Status"
             android:textSize="24sp"
@@ -49,73 +52,73 @@
             android:id="@+id/textViewSpecies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Species"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewStatus"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewStatus" />
 
         <TextView
             android:id="@+id/textViewType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Type"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSpecies"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewSpecies" />
 
         <TextView
             android:id="@+id/textViewGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Gender"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewType"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewType" />
 
         <TextView
             android:id="@+id/textViewOrigin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Origin"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewGender"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewGender" />
 
         <TextView
             android:id="@+id/textViewLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Location"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewOrigin"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewOrigin" />
 
         <TextView
             android:id="@+id/textViewEpisode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_28sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:textSize="24sp"
             android:text="Number of episodes : 10"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLocation"/>
+            app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

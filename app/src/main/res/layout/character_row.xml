@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_100sdp"
+    android:layout_height="135dp"
     android:gravity="center_horizontal">
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_260sdp"
-        android:layout_height="@dimen/_90sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:padding="@dimen/_5sdp"
+        android:layout_width="335dp"
+        android:layout_height="118dp"
+        android:layout_marginTop="6dp"
+        android:layout_gravity="center"
+        android:padding="5dp"
         app:cardCornerRadius="15dp"
         app:cardElevation="8dp"
         app:cardBackgroundColor="@color/cardViewBackground">
@@ -22,17 +22,17 @@
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_margin="12dp"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
         android:background="@drawable/rick_and_morty"
         android:layout_alignParentStart="true" />
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="@dimen/_135sdp"
+                android:layout_width="177dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway_medium"
                 android:textColor="@color/characterDetailsText"
@@ -41,34 +41,34 @@
 
             <TextView
                 android:id="@+id/gender"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="78dp"
+                android:layout_height="25dp"
                 android:layout_below="@id/name"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_toRightOf="@id/avatar"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway"
                 android:text="Male"
                 android:textColor="@color/characterDetailsText"
                 android:textSize="16sp" />
             <TextView
                 android:id="@+id/status"
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="115dp"
+                android:layout_height="25dp"
                 android:layout_below="@id/gender"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_toRightOf="@id/avatar"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway"
                 android:text="Alive"
                 android:textColor="@color/characterDetailsText"
                 android:textSize="16sp" />
             <ImageView
                 android:id="@+id/star"
-                android:layout_width="@dimen/_25sdp"
-                android:layout_height="@dimen/_25sdp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginEnd="6dp"
                 android:layout_below="@id/name"
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/outline_star_rate_black_24"/>
 
         </RelativeLayout>
