@@ -62,7 +62,6 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
     var count = 0
     fun changePage(pageId: Int) {
         count++
-        Log.i("count",count.toString())
         loadTrigger.value = pageId
     }
 

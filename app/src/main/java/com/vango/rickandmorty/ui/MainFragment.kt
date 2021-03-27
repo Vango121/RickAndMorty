@@ -57,6 +57,10 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             }
         })
         GlobalScope.launch {
+            viewModel.getDataFromWeb()
+        }
+        GlobalScope.launch {
+            Log.i("global","scope")
             viewModel.getnewFav()
             viewModel.getDataFromWeb()
         }
