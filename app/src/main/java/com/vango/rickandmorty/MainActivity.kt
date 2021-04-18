@@ -10,6 +10,8 @@ import com.google.gson.Gson
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.ui.MainFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 
 @AndroidEntryPoint
@@ -32,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         try {
             fragment = fragmentClass.newInstance() as Fragment
             val bundle = Bundle()
-            bundle.putString("character", Gson().toJson(character))
+            bundle.putString("character", Json.encodeToString(character))
             fragment.arguments = bundle
         } catch (e: Exception) {
             e.printStackTrace()

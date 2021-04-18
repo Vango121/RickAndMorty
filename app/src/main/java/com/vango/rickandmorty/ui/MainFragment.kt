@@ -1,11 +1,9 @@
 package com.vango.rickandmorty.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,6 +14,7 @@ import com.vango.rickandmorty.MainActivity
 import com.vango.rickandmorty.R
 import com.vango.rickandmorty.databinding.MainFragmentBinding
 import com.vango.rickandmorty.model.Results
+import com.vango.rickandmorty.util.LoadingState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -58,9 +57,9 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 charcterListAdapter.notifyItemChanged(result.id)
             }
         })
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Main) { // get data from web
             try {
-                withContext(Dispatchers.IO) {
+                withContext(Dispatchers.IO) { // called in order not to block the ui
                     viewModel.getDataFromWeb()
                 }
             } catch (e: HttpException) {
@@ -75,7 +74,6 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
 
         GlobalScope.launch {
             viewModel.getnewFav()
-            //viewModel.getDataFromWeb()
         }
         viewModel.paginationLiveData.observe(viewLifecycleOwner, {
             charcterListAdapter.submitList(it)
@@ -100,12 +98,15 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
         setHasOptionsMenu(false)
     }
 
-    private var loading = true
-    var pastVisiblesItems = 0
-    var visibleItemCount: Int = 0
-    var totalItemCount: Int = 0
-    var count = 1
+    //private var loading = true
+    private var pastVisiblesItems = 0
+    private var visibleItemCount: Int = 0
+    private var totalItemCount: Int = 0
+    private var count = 1
+    private var loading: LoadingState = LoadingState.loading
+
     private fun initRecycler() {
+
         binding.characterRecycler.apply {
             layoutManager = LinearLayoutManager(activity)
             charcterListAdapter = CharacterListAdapter(this@MainFragment)
@@ -122,13 +123,13 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                     pastVisiblesItems =
                         (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
 
-                    if (loading) {
+                    if (loading == LoadingState.loading) {
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            loading = false
+                            loading = LoadingState.wait
                             runBlocking {
                                 ++count
                                 viewModel.changePage(count)
-                                loading = true
+                                loading = LoadingState.loading
                             }
 
                         }

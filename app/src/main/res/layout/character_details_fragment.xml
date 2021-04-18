@@ -16,7 +16,7 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/raleway_bold"
             android:gravity="center_horizontal"
-            android:text="Rick Sanchez"
+            android:text="@string/rick_sanchez"
             android:textColor="@color/characterDetailsText"
             android:textSize="28sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="33dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Status"
+            android:text="@string/statusEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageViewAvatar" />
@@ -55,7 +55,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Species"
+            android:text="@string/speciesEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewStatus" />
@@ -67,7 +67,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Type"
+            android:text="@string/typeEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewSpecies" />
@@ -79,7 +79,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Gender"
+            android:text="@string/genderEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewType" />
@@ -91,7 +91,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Origin"
+            android:text="@string/originEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewGender" />
@@ -103,7 +103,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Location"
+            android:text="@string/locationEmpty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewOrigin" />
@@ -115,7 +115,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/raleway_medium"
-            android:text="Number of episodes : 10"
+            android:text="@string/number_of_episodes_10Empty"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewLocation" />

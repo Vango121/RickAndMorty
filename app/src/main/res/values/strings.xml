@@ -11,4 +11,14 @@
     <string name="alive">Alive</string>
     <string name="dead">Dead</string>
     <string name="unknown">Unknown</string>
+    <string name="rick_sanchez">Rick Sanchez</string>
+    <string name="statusEmpty">Status</string>
+    <string name="speciesEmpty">Species</string>
+    <string name="typeEmpty">Type</string>
+    <string name="genderEmpty">Gender</string>
+    <string name="originEmpty">Origin</string>
+    <string name="locationEmpty">Location</string>
+    <string name="number_of_episodes_10Empty">Number of episodes : 10</string>
+    <string name="name">Name</string>
+    <string name="male">Male</string>
 </resources>

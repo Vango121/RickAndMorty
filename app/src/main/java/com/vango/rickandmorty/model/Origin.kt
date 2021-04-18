@@ -1,6 +1,7 @@
 package com.vango.rickandmorty.model
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
 /*
 Copyright (c) 2020 Kotlin Data Classes Generated from JSON powered by http://www.json2kotlin.com
@@ -13,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 For support, please feel free to contact me at https://www.linkedin.com/in/syedabsar */
 
-
+@Serializable
 data class Origin(
 
 	@SerializedName("name") val name: String,

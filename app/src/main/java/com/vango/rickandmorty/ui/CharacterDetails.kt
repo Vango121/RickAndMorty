@@ -16,6 +16,8 @@ import com.vango.rickandmorty.MainActivity
 import com.vango.rickandmorty.R
 import com.vango.rickandmorty.databinding.CharacterDetailsFragmentBinding
 import com.vango.rickandmorty.model.Results
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class CharacterDetails : Fragment() {
 
@@ -56,7 +58,7 @@ class CharacterDetails : Fragment() {
 
     fun getDataFromPreviousFragment(): Results {
         val characterGson: String? = arguments?.getString("character")
-        return Gson().fromJson(characterGson, Results::class.java)
+        return Json.decodeFromString(characterGson!!)
     }
 
     fun setUiElements(results: Results) {

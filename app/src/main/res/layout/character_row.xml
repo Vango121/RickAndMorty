@@ -36,7 +36,7 @@
                 android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway_medium"
                 android:textColor="@color/characterDetailsText"
-                android:text="Name "
+                android:text="@string/name"
                 android:textSize="18sp" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway"
-                android:text="Male"
+                android:text="@string/male"
                 android:textColor="@color/characterDetailsText"
                 android:textSize="16sp" />
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@id/avatar"
                 android:fontFamily="@font/raleway"
-                android:text="Alive"
+                android:text="@string/alive"
                 android:textColor="@color/characterDetailsText"
                 android:textSize="16sp" />
             <ImageView

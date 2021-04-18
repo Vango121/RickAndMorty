@@ -2,10 +2,7 @@ package com.vango.rickandmorty.ui
 
 
 import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.vango.rickandmorty.model.Results
@@ -87,14 +84,14 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
     private fun addFavourite(character: Results) {
         favouritesList.add(character)
         _favourites.postValue(favouritesList)
-        GlobalScope.launch { repository.saveFavourites(favouritesList) }
+        viewModelScope.launch { repository.saveFavourites(favouritesList) }
     }
 
     fun removeFavourite(character: Results) {
         val id = favouritesList.indexOf(character)
         favouritesList.removeAt(id)
         _favourites.postValue(favouritesList)
-        GlobalScope.launch { repository.saveFavourites(favouritesList) }
+        viewModelScope.launch { repository.saveFavourites(favouritesList) }
     }
 
     suspend fun getnewFav() {

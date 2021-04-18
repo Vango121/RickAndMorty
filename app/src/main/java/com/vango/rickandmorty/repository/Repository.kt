@@ -44,11 +44,11 @@ class Repository @Inject constructor(
     }
 
     fun getCharactersRoom(pageId: Int, filterId: Int): LiveData<List<Results>> {
-        when (filterId) {
-            1 -> return characterDao.getPageFiltered(pageId, "Alive")
-            2 -> return characterDao.getPageFiltered(pageId, "Dead")
-            3 -> return characterDao.getPageFiltered(pageId, "unknown")
-            else -> return characterDao.getPage(pageId)
+        return when (filterId) {
+            1 -> characterDao.getPageFiltered(pageId, "Alive")
+            2 -> characterDao.getPageFiltered(pageId, "Dead")
+            3 -> characterDao.getPageFiltered(pageId, "unknown")
+            else -> characterDao.getPage(pageId)
         }
     }
 
