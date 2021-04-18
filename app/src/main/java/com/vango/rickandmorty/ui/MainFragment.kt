@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -16,9 +17,9 @@ import com.vango.rickandmorty.R
 import com.vango.rickandmorty.databinding.MainFragmentBinding
 import com.vango.rickandmorty.model.Results
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import retrofit2.HttpException
+import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
@@ -56,13 +57,24 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 charcterListAdapter.notifyItemChanged(result.id)
             }
         })
-        GlobalScope.launch {
-            viewModel.getDataFromWeb()
+        GlobalScope.launch(Dispatchers.Main) {
+            try {
+                withContext(Dispatchers.IO){
+                    viewModel.getDataFromWeb()
+                }
+            }catch (e: HttpException) {
+                e.printStackTrace()
+            }catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+
         }
+
         GlobalScope.launch {
-            Log.i("global","scope")
             viewModel.getnewFav()
-            viewModel.getDataFromWeb()
+            //viewModel.getDataFromWeb()
         }
         viewModel.paginationLiveData.observe(viewLifecycleOwner,{
             charcterListAdapter.submitList(it)
