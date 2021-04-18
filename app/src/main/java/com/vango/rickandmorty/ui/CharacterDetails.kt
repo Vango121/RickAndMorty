@@ -25,8 +25,6 @@ class CharacterDetails : Fragment() {
         fun newInstance() = CharacterDetails()
     }
 
-    private val viewModel: CharacterDetailsViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

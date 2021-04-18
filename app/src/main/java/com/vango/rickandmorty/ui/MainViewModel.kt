@@ -1,35 +1,29 @@
 package com.vango.rickandmorty.ui
 
 
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.*
-import androidx.paging.PagedList
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.vango.rickandmorty.model.MainModel
 import com.vango.rickandmorty.model.Results
 import com.vango.rickandmorty.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
-public class MainViewModel @Inject constructor(val repository: Repository) : ViewModel() {
+class MainViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     private var charactersList: MutableList<Results> = ArrayList()
 
 
-    private var allCharacters: LiveData<List<Results>> = repository.getCharactersRoom(1,0)
+    private var allCharacters: LiveData<List<Results>> = repository.getCharactersRoom(1, 0)
     private var _favourites = MutableLiveData<List<Results>>()
     val favourites: LiveData<List<Results>>
         get() = _favourites
@@ -46,7 +40,8 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
     private val loadTrigger = MutableLiveData<Int>()
     val paginationLiveData: LiveData<List<Results>> = // switch map when more data is needed
         Transformations.switchMap(loadTrigger) {
-            getCharacters(loadTrigger.value!!) } // get data from room
+            getCharacters(loadTrigger.value!!)
+        } // get data from room
 
     suspend fun getDataFromWeb() { // and insert it into room db
         val charactersList: MutableList<Results> = ArrayList()
@@ -59,14 +54,14 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
         repository.insertData(charactersList)
     }
 
-    var count = 0
+    private var count = 0
     fun changePage(pageId: Int) {
         count++
         loadTrigger.value = pageId
     }
 
-    fun getCharacters(pageId: Int) = runBlocking {
-        repository.getCharactersRoom(pageId,clickedRadioButtonId)
+    private fun getCharacters(pageId: Int) = runBlocking {
+        repository.getCharactersRoom(pageId, clickedRadioButtonId)
     }
 
 
@@ -89,7 +84,7 @@ public class MainViewModel @Inject constructor(val repository: Repository) : Vie
         }
     }
 
-    fun addFavourite(character: Results) {
+    private fun addFavourite(character: Results) {
         favouritesList.add(character)
         _favourites.postValue(favouritesList)
         GlobalScope.launch { repository.saveFavourites(favouritesList) }

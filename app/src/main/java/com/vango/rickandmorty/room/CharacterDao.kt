@@ -20,11 +20,11 @@ interface CharacterDao {
     @Delete
     fun delete(results: Results)
 
-    @Query("SELECT * FROM characters_table")
-    fun getAllCharacters(): LiveData<List<Results>>
+//    @Query("SELECT * FROM characters_table")
+//    fun getAllCharacters(): LiveData<List<Results>>
 
-    @Query("SELECT * FROM characters_table")
-    fun getAllCharacters1(): PagingSource<Int,Results>
+//    @Query("SELECT * FROM characters_table")
+//    fun getAllCharacters1(): PagingSource<Int,Results>
 
     @Query("SELECT * from characters_table LIMIT 0 ,:pageId*30")
     fun getPage(pageId: Int): LiveData<List<Results>>

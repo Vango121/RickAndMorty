@@ -29,6 +29,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     private lateinit var binding: MainFragmentBinding
     private lateinit var charcterListAdapter: CharacterListAdapter // recyclerview adapter
     private var favourites = false
+
     companion object {
         fun newInstance() = MainFragment()
     }
@@ -53,18 +54,18 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
         })
         viewModel.favourites.observe(viewLifecycleOwner, {
             charcterListAdapter.passFavourites(it)
-            for (result in it){
+            for (result in it) {
                 charcterListAdapter.notifyItemChanged(result.id)
             }
         })
         GlobalScope.launch(Dispatchers.Main) {
             try {
-                withContext(Dispatchers.IO){
+                withContext(Dispatchers.IO) {
                     viewModel.getDataFromWeb()
                 }
-            }catch (e: HttpException) {
+            } catch (e: HttpException) {
                 e.printStackTrace()
-            }catch (e: IOException) {
+            } catch (e: IOException) {
                 e.printStackTrace()
             } catch (e: Throwable) {
                 e.printStackTrace()
@@ -76,11 +77,11 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             viewModel.getnewFav()
             //viewModel.getDataFromWeb()
         }
-        viewModel.paginationLiveData.observe(viewLifecycleOwner,{
+        viewModel.paginationLiveData.observe(viewLifecycleOwner, {
             charcterListAdapter.submitList(it)
         })
         viewModel.characters.observe(viewLifecycleOwner, {
-                charcterListAdapter.submitList(it)
+            charcterListAdapter.submitList(it)
         })
         viewModel.favButtonEnabled.observe(viewLifecycleOwner, {
             charcterListAdapter.setEnabled(it)
@@ -92,6 +93,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
 
         return binding.root
     }
+
     fun setBackButton() { // add back button
         val actionBar: ActionBar? = (activity as MainActivity?)?.getSupportActionBar()
         actionBar?.setDisplayHomeAsUpEnabled(false)
@@ -109,9 +111,10 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter = CharacterListAdapter(this@MainFragment)
             adapter = charcterListAdapter
         }
-        binding.characterRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() { // pagination
+        binding.characterRecycler.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() { // pagination
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)&&!favourites) { //check for end of current items
+                if (!recyclerView.canScrollVertically(1) && !favourites) { //check for end of current items
                     visibleItemCount =
                         recyclerView.childCount
                     totalItemCount =

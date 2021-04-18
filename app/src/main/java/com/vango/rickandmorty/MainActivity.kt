@@ -1,5 +1,6 @@
 package com.vango.rickandmorty
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -16,14 +17,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode())
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode())
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.host_fragment, MainFragment.newInstance())
-                    .commitNow()
+                .replace(R.id.host_fragment, MainFragment.newInstance())
+                .commitNow()
         }
     }
+
     fun replaceFragment(fragmentClass: Class<*>, character: Results) {
         var fragment: Fragment? = null
         try {
@@ -40,16 +43,5 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack("main")
             .commit()
     }
-    fun replaceFragment(fragmentClass: Class<*>) {
-        var fragment: Fragment? = null
-        try {
-            fragment = fragmentClass.newInstance() as Fragment
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        // Insert the fragment by replacing any existing fragment
-        val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment!!)
-            .commit()
-    }
+
 }

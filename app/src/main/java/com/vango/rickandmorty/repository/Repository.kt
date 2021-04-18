@@ -39,26 +39,18 @@ class Repository @Inject constructor(
 
     fun insertData(characters: List<Results>) { // insert to room db
         CoroutineScope(Dispatchers.IO).launch {
-            for (character in characters) {
-                characterDao.insert(character)
-            }
+            characterDao.insertAll(characters)
         }
     }
 
     fun getCharactersRoom(pageId: Int, filterId: Int): LiveData<List<Results>> {
-        when(filterId){
-            1-> return characterDao.getPageFiltered(pageId, "Alive")
-            2-> return characterDao.getPageFiltered(pageId, "Dead")
-            3-> return characterDao.getPageFiltered(pageId, "unknown")
+        when (filterId) {
+            1 -> return characterDao.getPageFiltered(pageId, "Alive")
+            2 -> return characterDao.getPageFiltered(pageId, "Dead")
+            3 -> return characterDao.getPageFiltered(pageId, "unknown")
             else -> return characterDao.getPage(pageId)
         }
     }
-
-
-    fun getAllCharacters(): Deferred<LiveData<List<Results>>> =
-        CoroutineScope(Dispatchers.IO).async {
-            characterDao.getAllCharacters()
-        }
 
 
     suspend fun saveFavourites(favourites: List<Results>) {
