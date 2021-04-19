@@ -30,18 +30,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun replaceFragment(fragmentClass: Class<*>, character: Results) {
-        var fragment: Fragment? = null
-        try {
-            fragment = fragmentClass.newInstance() as Fragment
+        val fragment: Fragment
+        fragment = fragmentClass.newInstance() as Fragment
             val bundle = Bundle()
             bundle.putString("character", Json.encodeToString(character))
             fragment.arguments = bundle
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
         // Insert the fragment by replacing any existing fragment
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment!!)
+        fragmentManager.beginTransaction().replace(R.id.host_fragment, fragment)
             .addToBackStack("main")
             .commit()
     }
