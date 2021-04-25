@@ -48,7 +48,7 @@ class CharacterDetails : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean { // back button
         if (item.itemId == android.R.id.home) {
             (activity as MainActivity?)!!.onBackPressed()
             return true
@@ -56,12 +56,12 @@ class CharacterDetails : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    fun getDataFromPreviousFragment(): Results {
+    fun getDataFromPreviousFragment(): Results { // get data passed by previous fragment
         val characterGson: String? = arguments?.getString("character")
         return Json.decodeFromString(characterGson!!)
     }
 
-    fun setUiElements(results: Results) {
+    fun setUiElements(results: Results) { // set ui
         binding.textViewName.setText(results.name)
         binding.textViewGender.text = getString(R.string.gender, results.gender)
         binding.textViewLocation.text = getString(R.string.location, results.location.name)

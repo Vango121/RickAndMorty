@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode())
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) // block orientation
         setContentView(R.layout.main_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val fragment: Fragment
         fragment = fragmentClass.newInstance() as Fragment
             val bundle = Bundle()
-            bundle.putString("character", Json.encodeToString(character))
+            bundle.putString("character", Json.encodeToString(character)) // pass clicked character to characterDetails fragment
             fragment.arguments = bundle
         // Insert the fragment by replacing any existing fragment
         val fragmentManager = supportFragmentManager

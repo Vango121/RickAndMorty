@@ -51,13 +51,11 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
         repository.insertData(charactersList)
     }
 
-    private var count = 0
     fun changePage(pageId: Int) {
-        count++
         loadTrigger.value = pageId
     }
 
-    private fun getCharacters(pageId: Int) = runBlocking {
+    private fun getCharacters(pageId: Int) = runBlocking { // get characters from room db
         repository.getCharactersRoom(pageId, clickedRadioButtonId)
     }
 
@@ -70,31 +68,31 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
         charactersList = list as MutableList<Results>
     }
 
-    private fun getFilteredList(parameter: String): List<Results> =
+    private fun getFilteredList(parameter: String): List<Results> = // filter characters list (all, alive, dead, unknown)
         charactersList.filter { result -> result.status == parameter }
 
-    fun favClicked(character: Results) {
-        if (!favouritesList.contains(character)) {
+    fun favClicked(character: Results) { // handle fav button click
+        if (!favouritesList.contains(character)) { // if fav list don't contain character add
             addFavourite(character)
-        } else {
+        } else { // if fav list contain character remove it from list
             removeFavourite(character)
         }
     }
 
-    private fun addFavourite(character: Results) {
+    private fun addFavourite(character: Results) { //add fav logic
         favouritesList.add(character)
         _favourites.postValue(favouritesList)
         viewModelScope.launch { repository.saveFavourites(favouritesList) }
     }
 
-    fun removeFavourite(character: Results) {
+    fun removeFavourite(character: Results) { //remove ccharacter from favourite logic
         val id = favouritesList.indexOf(character)
         favouritesList.removeAt(id)
         _favourites.postValue(favouritesList)
         viewModelScope.launch { repository.saveFavourites(favouritesList) }
     }
 
-    suspend fun getnewFav() {
+    suspend fun getnewFav() { // get favourites from datastore
         val type = object : TypeToken<List<Results>>() {}.type
         repository.getFavourites().collect {
             favouritesList = Gson().fromJson(it, type)
@@ -102,21 +100,21 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
         }
     }
 
-    fun onStatusChange(p1: Int) {
+    fun onStatusChange(p1: Int) { // handle filtering option change with databinding
         when (p1) {
             0 -> {
                 clickedRadioButtonId = 0
                 _characters.postValue(charactersList)
             } // all
-            1 -> {
+            1 -> { // alive
                 clickedRadioButtonId = 1
                 _characters.postValue(getFilteredList("Alive"))
             }
-            2 -> {
+            2 -> { // dead
                 clickedRadioButtonId = 2
                 _characters.postValue(getFilteredList("Dead"))
             }
-            3 -> {
+            3 -> { // unknown
                 clickedRadioButtonId = 3
                 _characters.postValue(getFilteredList(("unknown")))
             }
@@ -129,7 +127,7 @@ class MainViewModel @Inject constructor(val repository: Repository) : ViewModel(
             isFavourites = true
             _favButtonEnabled.postValue(isFavourites)
         } else if (isFavourites) {
-            when (clickedRadioButtonId) {
+            when (clickedRadioButtonId) { // return to the same state as it was before entering favourites
                 0 -> _characters.postValue(charactersList)
                 1 -> _characters.postValue(getFilteredList("Alive"))
                 2 -> _characters.postValue(getFilteredList("Dead"))

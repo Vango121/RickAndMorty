@@ -51,9 +51,9 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                 binding.splash.visibility = View.GONE // hide splash screen when data is ready
             }
         })
-        viewModel.favourites.observe(viewLifecycleOwner, {
-            charcterListAdapter.passFavourites(it)
-            for (result in it) {
+        viewModel.favourites.observe(viewLifecycleOwner, { favList ->
+            charcterListAdapter.passFavourites(favList)
+            for (result in favList) {
                 charcterListAdapter.notifyItemChanged(result.id)
             }
         })
@@ -72,18 +72,18 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
 
         }
 
-        GlobalScope.launch {
+        GlobalScope.launch { //coroutine for datastore favourites
             viewModel.getnewFav()
         }
-        viewModel.paginationLiveData.observe(viewLifecycleOwner, {
-            charcterListAdapter.submitList(it)
+        viewModel.paginationLiveData.observe(viewLifecycleOwner, { paginationList ->
+            charcterListAdapter.submitList(paginationList)
         })
         viewModel.characters.observe(viewLifecycleOwner, {
             charcterListAdapter.submitList(it)
         })
-        viewModel.favButtonEnabled.observe(viewLifecycleOwner, {
-            charcterListAdapter.setEnabled(it)
-            favourites = it
+        viewModel.favButtonEnabled.observe(viewLifecycleOwner, { favButton ->
+            charcterListAdapter.setEnabled(favButton)
+            favourites = favButton
         })
         setBackButton()
         initRecycler() // init recycler view
@@ -103,7 +103,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
     private var count = 1
-    private var loading: LoadingState = LoadingState.loading
+    private var loading: LoadingState = LoadingState.loading // default starting state
 
     private fun initRecycler() {
 
@@ -112,7 +112,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
             charcterListAdapter = CharacterListAdapter(this@MainFragment)
             adapter = charcterListAdapter
         }
-        binding.characterRecycler.addOnScrollListener(object :
+        binding.characterRecycler.addOnScrollListener(object : // onScrollListener for pagination
             RecyclerView.OnScrollListener() { // pagination
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (!recyclerView.canScrollVertically(1) && !favourites) { //check for end of current items
@@ -127,11 +127,10 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
                         if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                             loading = LoadingState.wait
                             runBlocking {
-                                ++count
-                                viewModel.changePage(count)
-                                loading = LoadingState.loading
+                                ++count // increment page
+                                viewModel.changePage(count)   // get page with id from count
+                                loading = LoadingState.loading //change state
                             }
-
                         }
                     }
                 }
@@ -140,7 +139,7 @@ class MainFragment @Inject constructor() : Fragment(), CharacterListAdapter.Inte
     }
 
     override fun onItemSelected(position: Int, item: Results) {
-        (activity as MainActivity?)?.replaceFragment(CharacterDetails::class.java, item)
+        (activity as MainActivity?)?.replaceFragment(CharacterDetails::class.java, item) // change fragment
     }
 
     override fun onStarSelected(position: Int, item: Results, favourite: Boolean) {
